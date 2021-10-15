@@ -1,0 +1,29 @@
+#version: "2.1"
+version: "3.9"
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000                                                                  #cat /etc/passwd | grep framos
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - SERVERURL=riverside.encoremsi.com                               #optional
+      - SERVERPORT=51820                                                    #optional
+      - PEERS=1                                                                     #optional  numero de clientes, puede ser nombre1, nombre2, nombren...
+      - PEERDNS=auto                                                            #optional
+      - INTERNAL_SUBNET=10.0.1.0/24                                       #optional
+      - ALLOWEDIPS=192.168.1.0/24                                         #0.0.0.0/0 #optional
+    volumes:
+      - "/bkp1/VPN:/config"
+     # - /VPNpath/to/appdata/config:/config
+      - "/lib/modules:/lib/modules"
+      - "/usr/src:/usr/src"
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
