@@ -1,0 +1,19 @@
+
+version: '3.4'
+
+services:
+  samba:
+    image: framos/samba:encore
+    container_name: samba
+    environment:
+      TZ: 'America/Los_Angeles'
+    ports:
+      - 139:139
+      - 445:445
+
+    volumes:
+      - "/bkp1/samba:/etc/samba" 
+      - "/home/juan/z_mirror:/sharefolder"
+    
+    command: '-u "1001:1001:juan:encore:acce55toz" -u "1002:1001:luis:encore:acce55toz" -u "1003:1001:sherleen:encore:acce55toz" -s "Z_mirror:/sharefolder:rw:framos,juan,luis,sherleen"'
+    restart: unless-stopped

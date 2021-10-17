@@ -1,0 +1,13 @@
+
+-Se creo otra imagen framos/samba
+-El docker file se modifico, agrenando desde aho el grupo  1001:encore
+-Se agrena la ENV de user pass y ID de admin
+
+- En el archivo entryppoint.sh, se da de alta el user de admin en samba, 
+	despues solo se agregan los ususrios al sistema y dan de alta en 
+	samba con los respectivos ID y grupo encore.
+
+-se comparte el volumen de juan/z_mirror y el smb.conf por cualquier cosa modificarlo ahi
+
+-Se ehecuta desde docker compose, quitando /udp de los puertos, pues estos de exponen como tcp
+
