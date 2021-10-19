@@ -1,3 +1,4 @@
+
 version: '3.4'
 
 services:
@@ -8,7 +9,10 @@ services:
 
     environment:
       TZ: 'America/Los_Angeles'
-      WORKGROUP: 'WORKGROUP' 
+      WORKGROUP: 'WORKGROUP'
+#      USER: 'juan' 
+      USERID: 1001
+      GROUPID: 1001  
 
     ports:
       - 139:139
@@ -21,4 +25,8 @@ services:
     tty: true
     volumes:
       - "/home/juan/z_mirror:/sharefolder"
-    command: '-s "Z_mirror;/sharefolder;yes;no;no;framos,juan,luis,sherleen" -u "framos;framos11;1000;encore;1001" -u "juan;acce55toz;1001;encore;1001" -u "luis;acce55toz;1002;encore;1001" -u "sherleen;acce55toz;1003;encore;1001" -p'
+#      - "/home/juan/test:/sharefolder"
+#    command: '-s "Z_mirror;/sharefolder;yes;no;no;framos,juan,luis,sherleen" -u "framos;framos11;1000;encore;1001" -u "juan;acce55toz;1001;encore;1001" -u 
+#"luis;acce55toz;1002;encore;1001" -u "sherleen;acce55toz;1003;encore;1001" -p'
+    command: '-s "Z_mirror;/sharefolder;yes;no;no;framos,juan,luis,sherleen" -u "framos;framos11" -u "juan;acce55toz" -u "luis;acce55toz" -u "sherleen;acce55toz" -p'
+
