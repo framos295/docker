@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONFIG_FILE="/etc/samba/smb.conf"
-#FIRSTTIME=true
+FIRSTTIME=true
 #INICIO=0
 #echo $USER
 #echo $PWDUSER
@@ -80,8 +80,11 @@ EOH
         echo -n "Add user "
         IFS=: read uid group username groupname password <<<"$OPTARG"
         echo -n "'$username' "
+        if [[ $FIRSTTIME ]] ; then
             adduser -u "$uid" -G "$groupname" "$username" -SHD
-        echo -n "with password '$password' "
+        FIRSTTIME=false
+        fi
+	echo -n "with password '$password' "
         echo "$password" |tee - |smbpasswd -s -a "$username"
         echo "DONE"
         ;;

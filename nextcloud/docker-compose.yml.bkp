@@ -1,0 +1,49 @@
+version: '3'
+
+volumes:
+  dataBase:
+  nc_nextcloud:
+  nc_apps:
+  nc_config:
+  nc_data:
+  nc_theme:
+
+services:
+  dataBase:
+    image: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - dataBase:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Huixtepec295
+      - MYSQL_PASSWORD=Huixtepec295
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=encorenc
+
+  cloud:
+    image: nextcloud
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - dataBase
+    volumes:
+      - nc_nextcloud:/var/www/html
+      - nc_apps:/var/www/html/custom_apps
+      - nc_config:/var/www/html/config
+      - nc_data:/var/www/html/data
+      - nc_theme:/var/www/html/themes
+    environment:
+      - MYSQL_PASSWORD=Huixtepec295
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=encorenc
+      - MYSQL_HOST=dataBase
+    depends_on:
+      - dataBase    
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

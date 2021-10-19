@@ -1,0 +1,11 @@
+sudo docker run -it --name samba -h samba_server -p 139:139 -p 445:445 \
+    -e TZ=America/Los_Angeles \
+    -e WORKGROUP=WORKGROUP \
+    -v /home/juan/z_mirror:/sharefolder \
+    -d dperson/samba -p \
+        -u "framos;framos11;1000;encore;1001" \
+        -u "juan;acce55toz;1001;encore;1001" \
+        -u "luis;acce55toz;1002;encore;1001" \
+        -u "sherleen;acce55toz;1003;encore;1001" \
+        -s "Z_mirror;/sharefolder;yes;no;no;framos,juan,luis,sherleen"  
+            

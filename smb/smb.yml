@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  samba:
+    #image: dperson/samba
+    image: framos/samba:v1
+    container_name: samba
+
+    environment:
+      TZ: 'America/Los_Angeles'
+      WORKGROUP: 'WORKGROUP' 
+
+    ports:
+      - 139:139
+      - 445:445
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - "/home/juan/z_mirror:/sharefolder"
+    command: '-s "Z_mirror;/sharefolder;yes;no;no;framos,juan,luis,sherleen" -u "framos;framos11;1000;encore;1001" -u "juan;acce55toz;1001;encore;1001" -u "luis;acce55toz;1002;encore;1001" -u "sherleen;acce55toz;1003;encore;1001" -p'
