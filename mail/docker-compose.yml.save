@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  server:
+    #build: .
+    image: server:v4
+    container_name: server
+    hostname: email
+    environment:
+      - TZ=America/Los_Angeles
+      - DOMAIN=encoremsi.com
+
+      - DNSr=cpe-23-242-120-40.socal.res.rr.com - IP_EXTERNA=23.242.120.40
+
+    volumes:
+      - "/mail/config/mysql:/var/lib/mysql"                   #Base de datos
+      - "/mail/config/MTApostfix:/etc/postfix"                #MTA Mail Transfer Agent, Agente de transferencia de email
+      - "/mail/config/MDAdovecot:/etc/dovecot"                #Mail Delivery Agent, Agente de entrega de mensajes
+      - "/mail/config/antiSPAM:/etc/spamassassin"             #AntiSPAM
+      - "/mail/config/Roundcube:/etc/roundcube"               #interface Webmail
+      - "/mail/config/Fail2ban:/etc/fail2ban"                 #Proteccion vs ataques
+#      - "/mail/config/log:/var/log"                           #logs
+      - "/mail/config/spoolDKIM:/var/spool"                   #Firma DKIM
+      - "/mail/config/openDKIM:/etc/opendkim"                 #Firma DKIM
+      - "/mail/config/CLAMAV:/etc/amavis"                     #Antivirus
+      - "/mail/mail_storage:/var/mail"                        #Almacenamiento de email
+      - "/bkp1/web/web:/var/www/html"                         #Paginas WEB
+      - "/bkp1/web/apache2:/etc/pache2"                       #Configuracion de apache2
+      - "/bkp1/web/letssncrypt:/etc/letssncrypt"              #Certificados SSL letsencrypt
+      - "/bkp1/web/adminer:/usr/share/adminer"                #Configuracion adminer
+    tty: true
+    ports:
+      #- 51820:51820/udp
+      - 22:22/tcp
+      - 25:25/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+      - 465:465/tcp
+      - 587:587/tcp
+      - 993:993/tcp
+      - 995:995/tcp
+      - 3306:3306/tcp
+    restart: unless-stopped

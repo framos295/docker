@@ -1,0 +1,78 @@
+version: "3.9"
+services:
+  server:
+    privileged: true
+    #build: .
+    image: server:v9
+    container_name: server
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    hostname: 'email.encoremsi.com'
+    environment:
+      - TZ=America/Los_Angeles
+      - DOMAIN=encoremsi.com
+      - DNSr=cpe-23-242-120-40.socal.res.rr.com
+      - IP_EXTERNA=23.242.120.40
+      - myhostname=email.encoremsi.com
+
+    volumes:
+#      - "/bin/systemctl:/bin/systemctl"
+#      - "/run/systemd/system:/run/systemd/system"
+#      - "/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket"
+#      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#      - "/mail/config/mysql:/var/lib/mysql"                   #Base de datos
+      - "/mail/config/MTApostfix:/etc/postfix"                #MTA Mail Transfer Agent, Agente de transferencia de email
+      - "/mail/config/MDAdovecot:/etc/dovecot"                #Mail Delivery Agent, Agente de entrega de mensajes
+      - "/mail/config/antiSPAM:/etc/spamassassin"             #AntiSPAM
+      - "/mail/config/Roundcube:/etc/roundcube"               #interface Webmail
+      - "/mail/config/Fail2ban:/etc/fail2ban"                 #Proteccion vs ataques
+      #- "/mail/config/log:/var/log"                           #logs
+      - "/mail/config/spoolDKIM:/var/spool"                   #Firma DKIM
+      - "/mail/config/openDKIM:/etc/opendkim"                 #Firma DKIM
+      - "/mail/config/CLAMAV:/etc/amavis"                     #Antivirus
+      - "/mail/mail_storage:/var/mail"                        #Almacenamiento de email
+      - "/bkp1/web/web:/var/www/html"                              #Paginas WEB
+      - "/bkp1/web/apache2:/etc/pache2"                      #Configuracion de apache2
+      - "/bkp1/web/letssncrypt:/etc/letssncrypt"             #Certificados SSL letsencrypt
+#      - "/bkp1/web/adminer:/usr/share/adminer"               #Configuracion adminer
+    tty: true
+    tmpfs:
+      - /tmp
+      - /run
+    ports:
+      #- 51820:51820/udp
+      - 22:22/tcp
+      - 25:25/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+      - 465:465/tcp
+      - 587:587/tcp
+      - 993:993/tcp
+      - 995:995/tcp
+#      - 3306:3306/tcp
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db  
+  db:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb-file-per-table=1 --skip-innodb-read-only-compressed
+    volumes:
+      #- "/bkp1/pruebas:/var/lib/mysql"
+      - "/mail/config/mysql:/var/lib/mysql"                   #Base de datos
+    environment:
+      - MYSQL_ROOT_PASSWORD=Huixtepec295
+#      - MYSQL_PASSWORD=Huixtepec295
+#      - MYSQL_DATABASE=nextcloud
+#      - MYSQL_USER=adminnc
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080

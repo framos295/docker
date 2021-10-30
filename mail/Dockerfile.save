@@ -17,12 +17,8 @@ RUN aptitude install -y ssh
 RUN echo '#Evitar que se desconecta de SSH \n \
 	CLIENTALIVEINTERVAL 60 \n \
 	CLIENTALIVECOUNTMAX 3' >>/etc/ssh/sshd_config
+RUN aptitude install -y ssh
 
-RUN aptitude install -y sudo 
-
-RUN aptitude install -y mariadb-client 
-
-RUN aptitude install wget
 
 #2.2.Instalar MySQL/MariaDB.
 #RUN aptitude install -y mariadb-client mariadb-server
