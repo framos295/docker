@@ -22,7 +22,7 @@ RUN aptitude install -y sudo
 
 RUN aptitude install -y mariadb-client 
 
-RUN aptitude install wget
+RUN aptitude install -y wget
 
 #2.2.Instalar MySQL/MariaDB.
 #RUN aptitude install -y mariadb-client mariadb-server
@@ -36,9 +36,10 @@ RUN aptitude install wget
 #    certbot python3-certbot-apache php-tcpdf                                #Se uso el python3 porque python no encontro el paquete
 #    certbot python-certbot-apache php-tcpdf                                
 
-#ENV DOMAIN=encoremsi.com
+ENV DOMAIN=encoremsi.com
 #ENV DNSr=cpe-23-242-120-40.socal.res.rr.com
 #ENV IP_EXTERNA=23.242.120.40
+ENV APACHE_LOG_DIR=/var/logs/apache2
 
 # Configuracion para instalar Posrtfix desatendido
 #RUN debconf-set-selections <<< "postfix postfix/mailname string $DNSr" \
@@ -70,6 +71,7 @@ EXPOSE 465/tcp
 EXPOSE 587/tcp
 EXPOSE 993/tcp
 EXPOSE 995/tcp
+EXPOSE 110/tcp
 EXPOSE 3306/tcp
 
 ## VOLUMES ##

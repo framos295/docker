@@ -3,38 +3,38 @@ services:
   server:
     privileged: true
     #build: .
-    image: server:v9
+    image: server:v10
     container_name: server
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    hostname: 'email.encoremsi.com'
+    hostname: email.encoremsi.com
     environment:
       - TZ=America/Los_Angeles
-      - DOMAIN=encoremsi.com
+#      - DOMAIN=encoremsi.com
       - DNSr=cpe-23-242-120-40.socal.res.rr.com
       - IP_EXTERNA=23.242.120.40
-      - myhostname=email.encoremsi.com
+#      - myhostname=email.encoremsi.com
 
     volumes:
-#      - "/bin/systemctl:/bin/systemctl"
-#      - "/run/systemd/system:/run/systemd/system"
-#      - "/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket"
+#      - "/bin/systemctl:/bin/systemctl:ro"
+#      - "/run/systemd/system:/run/systemd/system:ro"
+#      - "/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro"
 #      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
 #      - "/mail/config/mysql:/var/lib/mysql"                   #Base de datos
-      - "/mail/config/MTApostfix:/etc/postfix"                #MTA Mail Transfer Agent, Agente de transferencia de email
-      - "/mail/config/MDAdovecot:/etc/dovecot"                #Mail Delivery Agent, Agente de entrega de mensajes
-      - "/mail/config/antiSPAM:/etc/spamassassin"             #AntiSPAM
-      - "/mail/config/Roundcube:/etc/roundcube"               #interface Webmail
-      - "/mail/config/Fail2ban:/etc/fail2ban"                 #Proteccion vs ataques
+#      - "/mail/config/MTApostfix:/etc/postfix"                #MTA Mail Transfer Agent, Agente de transferencia de email
+#      - "/mail/config/MDAdovecot:/etc/dovecot"                #Mail Delivery Agent, Agente de entrega de mensajes
+#      - "/mail/config/antiSPAM:/etc/spamassassin"             #AntiSPAM
+#      - "/mail/config/Roundcube:/etc/roundcube"               #interface Webmail
+#      - "/mail/config/Fail2ban:/etc/fail2ban"                 #Proteccion vs ataques
       #- "/mail/config/log:/var/log"                           #logs
-      - "/mail/config/spoolDKIM:/var/spool"                   #Firma DKIM
-      - "/mail/config/openDKIM:/etc/opendkim"                 #Firma DKIM
-      - "/mail/config/CLAMAV:/etc/amavis"                     #Antivirus
+#      - "/mail/config/spoolDKIM:/var/spool"                   #Firma DKIM
+#      - "/mail/config/openDKIM:/etc/opendkim"                 #Firma DKIM
+#      - "/mail/config/CLAMAV:/etc/amavis"                     #Antivirus
       - "/mail/mail_storage:/var/mail"                        #Almacenamiento de email
       - "/bkp1/web/web:/var/www/html"                              #Paginas WEB
-      - "/bkp1/web/apache2:/etc/pache2"                      #Configuracion de apache2
-      - "/bkp1/web/letssncrypt:/etc/letssncrypt"             #Certificados SSL letsencrypt
+#      - "/bkp1/web/apache2:/etc/pache2"                      #Configuracion de apache2
+#      - "/bkp1/web/letssncrypt:/etc/letssncrypt"             #Certificados SSL letsencrypt
 #      - "/bkp1/web/adminer:/usr/share/adminer"               #Configuracion adminer
     tty: true
     tmpfs:
@@ -50,7 +50,8 @@ services:
       - 587:587/tcp
       - 993:993/tcp
       - 995:995/tcp
-#      - 3306:3306/tcp
+      - 110:110/tcp
+      - 3306:3306/tcp
     restart: unless-stopped
     depends_on:
       - db
@@ -65,10 +66,10 @@ services:
       #- "/bkp1/pruebas:/var/lib/mysql"
       - "/mail/config/mysql:/var/lib/mysql"                   #Base de datos
     environment:
-      - MYSQL_ROOT_PASSWORD=Huixtepec295
-#      - MYSQL_PASSWORD=Huixtepec295
-#      - MYSQL_DATABASE=nextcloud
-#      - MYSQL_USER=adminnc
+      - MYSQL_ROOT_PASSWORD=Huixtepec#295
+      - MYSQL_PASSWORD=Huixtepec295
+#      - MYSQL_DATABASE=nextcloudadminnc
+      - MYSQL_USER=diuxi
 
   adminer:
     image: adminer
